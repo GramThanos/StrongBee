@@ -37,6 +37,8 @@ try:
 except ImportError:  # EdDSA requires Cryptography >= 2.6.
     ed25519 = None
 
+from cryptography.exceptions import InvalidSignature as _InvalidSignature
+import falcon.falcon as falcon
 
 class CoseKey(dict):
     """A COSE formatted public key.
@@ -103,9 +105,9 @@ class CoseKey(dict):
     def supported_algorithms():
         """Get a list of all supported algorithm identifiers"""
         if ed25519:
-            algs = (ES256, EdDSA, PS256, RS256)
+            algs = (ES256, EdDSA, PS256, RS256, FLCN256)
         else:
-            algs = (ES256, PS256, RS256)
+            algs = (ES256, PS256, RS256, FLCN256)
         return [cls.ALGORITHM for cls in algs]
 
 
@@ -221,3 +223,18 @@ class RS1(CoseKey):
     def from_cryptography_key(cls, public_key):
         pn = public_key.public_numbers()
         return cls({1: 3, 3: cls.ALGORITHM, -1: int2bytes(pn.n), -2: int2bytes(pn.e)})
+
+
+class FLCN256(CoseKey):
+    ALGORITHM = -66777
+    _N = 256
+
+    def verify(self, message, signature):
+        #print(self)
+        pubkey = falcon.ExternalPublicKey(self[-2])
+        if not pubkey.verifyBase64(message, signature):
+            raise _InvalidSignature("FALCON validation failed")
+
+    @classmethod
+    def from_cryptography_key(cls, public_key):
+        raise NotImplementedError("Unsupported action");
