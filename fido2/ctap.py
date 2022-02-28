@@ -73,6 +73,19 @@ class CtapDevice(abc.ABC):
 
 
 class CtapError(Exception):
+    class UNKNOWN_ERR(int):
+        name = "UNKNOWN_ERR"
+
+        @property
+        def value(self):
+            return int(self)
+
+        def __repr__(self):
+            return "<ERR.UNKNOWN: %d>" % self
+
+        def __str__(self):
+            return "0x%02X - UNKNOWN" % self
+
     @unique
     class ERR(IntEnum):
         SUCCESS = 0x00
@@ -88,7 +101,9 @@ class CtapError(Exception):
         INVALID_CBOR = 0x12
         MISSING_PARAMETER = 0x14
         LIMIT_EXCEEDED = 0x15
-        UNSUPPORTED_EXTENSION = 0x16
+        # UNSUPPORTED_EXTENSION = 0x16  # No longer in spec
+        FP_DATABASE_FULL = 0x17
+        LARGE_BLOB_STORAGE_FULL = 0x18
         CREDENTIAL_EXCLUDED = 0x19
         PROCESSING = 0x21
         INVALID_CREDENTIAL = 0x22
@@ -98,8 +113,8 @@ class CtapError(Exception):
         UNSUPPORTED_ALGORITHM = 0x26
         OPERATION_DENIED = 0x27
         KEY_STORE_FULL = 0x28
-        NOT_BUSY = 0x29
-        NO_OPERATION_PENDING = 0x2A
+        # NOT_BUSY = 0x29  # No longer in spec
+        # NO_OPERATION_PENDING = 0x2A  # No longer in spec
         UNSUPPORTED_OPTION = 0x2B
         INVALID_OPTION = 0x2C
         KEEPALIVE_CANCEL = 0x2D
@@ -111,12 +126,17 @@ class CtapError(Exception):
         PIN_AUTH_INVALID = 0x33
         PIN_AUTH_BLOCKED = 0x34
         PIN_NOT_SET = 0x35
-        PIN_REQUIRED = 0x36
+        PUAT_REQUIRED = 0x36
         PIN_POLICY_VIOLATION = 0x37
         PIN_TOKEN_EXPIRED = 0x38
         REQUEST_TOO_LARGE = 0x39
         ACTION_TIMEOUT = 0x3A
         UP_REQUIRED = 0x3B
+        UV_BLOCKED = 0x3C
+        INTEGRITY_FAILURE = 0x3D
+        INVALID_SUBCOMMAND = 0x3E
+        UV_INVALID = 0x3F
+        UNAUTHORIZED_PERMISSION = 0x40
         OTHER = 0x7F
         SPEC_LAST = 0xDF
         EXTENSION_FIRST = 0xE0
@@ -130,8 +150,7 @@ class CtapError(Exception):
     def __init__(self, code):
         try:
             code = CtapError.ERR(code)
-            message = "CTAP error: %s" % code
         except ValueError:
-            message = "CTAP error: 0x%02X" % code
+            code = CtapError.UNKNOWN_ERR(code)
         self.code = code
-        super(CtapError, self).__init__(message)
+        super(CtapError, self).__init__("CTAP error: %s" % code)

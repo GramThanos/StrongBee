@@ -209,8 +209,12 @@ class ClientPin(object):
         LARGE_BLOB_WRITE = 0x10
         AUTHENTICATOR_CFG = 0x20
 
+    @staticmethod
+    def is_supported(info):
+        return "clientPin" in info.options
+
     def __init__(self, ctap, protocol=None):
-        if "clientPin" not in ctap.info.options:
+        if not self.is_supported(ctap.info):
             raise ValueError("Authenticator does not support ClientPin")
 
         self.ctap = ctap
@@ -245,7 +249,7 @@ class ClientPin(object):
         pin_hash = sha256(pin.encode())[:16]
         pin_hash_enc = self.protocol.encrypt(shared_secret, pin_hash)
 
-        if self._supports_permissions:
+        if self._supports_permissions and permissions:
             cmd = ClientPin.CMD.GET_TOKEN_USING_PIN
         else:
             cmd = ClientPin.CMD.GET_TOKEN_USING_PIN_LEGACY
@@ -266,11 +270,18 @@ class ClientPin(object):
             self.protocol.decrypt(shared_secret, pin_token_enc)
         )
 
-    def get_uv_token(self, permissions, permissions_rpid=None):
+    def get_uv_token(
+        self, permissions, permissions_rpid=None, event=None, on_keepalive=None
+    ):
         """Get a PIN/UV token from the authenticator using built-in UV.
 
         :param permissions: The permissions to associate with the token.
         :param permissions_rpid: The permissions RPID to associate with the token.
+        :param event: An optional threading.Event which can be used to cancel
+            the invocation.
+        :param on_keepalive: An optional callback to handle keep-alive messages
+            from the authenticator. The function is only called once for
+            consecutive keep-alive messages with the same status.
         :return: A PIN/UV token.
         """
         if not self.ctap.info.options.get("pinUvAuthToken"):
@@ -284,6 +295,8 @@ class ClientPin(object):
             key_agreement=key_agreement,
             permissions=permissions,
             permissions_rpid=permissions_rpid,
+            event=event,
+            on_keepalive=on_keepalive,
         )
 
         pin_token_enc = resp[ClientPin.RESULT.PIN_UV_TOKEN]
