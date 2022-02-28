@@ -4,6 +4,8 @@
 
 A FIDO2/WebAuthn server in python, based on Yubico's [FIDO 2.0 library](https://github.com/Yubico/python-fido2) and [Flask](https://github.com/pallets/flask)
 
+This branch is a PoC support of the post quantum resistant signature algorithm FALCON (using [falcon.py](https://github.com/tprest/falcon.py)) and can be used with the virtual authenticator of [WebDevAuthn](https://github.com/GramThanos/WebDevAuthn).
+
 ![strongbee-banner](strongbee.png)
 
 [Changelog](CHANGELOG.md)
