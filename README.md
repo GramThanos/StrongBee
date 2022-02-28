@@ -2,7 +2,7 @@
 
 # StrongBee
 
-A python FIDO2/WebAuthn server
+A FIDO2/WebAuthn server in python, based on Yubico's [FIDO 2.0 library](https://github.com/Yubico/python-fido2) and [Flask](https://github.com/pallets/flask)
 
 ![strongbee-banner](strongbee.png)
 
