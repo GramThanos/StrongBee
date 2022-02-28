@@ -37,4 +37,4 @@ This project was developed by [GramThanos](https://www.linkedin.com/in/gramthano
 
 This project is under The GNU LGPLv2.1 license.
 
-Copyright (c) 2020-2021 Grammatopoulos Athanasios-Vasileios
+Copyright (c) 2020-2022 Grammatopoulos Athanasios-Vasileios
