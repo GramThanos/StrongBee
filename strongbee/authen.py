@@ -49,6 +49,7 @@ def verifyCredentialsAuthentication(data, headers, method, path, payload):
 		datestr = headers['date']
 	else:
 		# Authentication failed - missing date header
+		#print('Authentication failed - missing date header')
 		return False
 
 	# Retrieve content hash
@@ -58,6 +59,7 @@ def verifyCredentialsAuthentication(data, headers, method, path, payload):
 		content_hash = headers['strongkey-content-sha256'] # for compatibility
 	else:
 		# Authentication failed - missing content sha256 header
+		#print('Authentication failed - missing content sha256 header')
 		return False
 
 	# Retrieve API version
@@ -67,6 +69,7 @@ def verifyCredentialsAuthentication(data, headers, method, path, payload):
 		api_version = headers['strongkey-api-version'] # for compatibility
 	else:
 		# Authentication failed - missing API version header
+		#print('Authentication failed - missing API version header')
 		return False
 
 	# Retrieve keyid and hmachash
@@ -77,9 +80,11 @@ def verifyCredentialsAuthentication(data, headers, method, path, payload):
 			hmachash = auth.groupdict()['hmachash']
 		else:
 			# Authentication failed - invalid authorization header format
+			#print('Authentication failed - invalid authorization header format')
 			return False
 	else:
 		# Authentication failed - missing authorization header
+		#print('Authentication failed - missing authorization header')
 		return False
 	
 	# Prepare payload hash and mime-type
@@ -101,6 +106,7 @@ def verifyCredentialsAuthentication(data, headers, method, path, payload):
 		return True
 
 	# Authentication failed - invalid signature
+	#print('Authentication failed - invalid signature')
 	return False
 
 
