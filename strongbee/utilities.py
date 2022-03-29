@@ -7,7 +7,7 @@
 #
 
 import base64, functools, json
-from flask import abort, request
+from flask import abort, request, current_app
 
 # Server Response Codes and Messages
 TYPE = {
