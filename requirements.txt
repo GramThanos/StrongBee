@@ -1,4 +1,4 @@
-fido2==0.8.1
-Flask==1.1.2
-Flask-SQLAlchemy==2.4.4
-SQLAlchemy==1.3.23
+fido2~=0.9.3
+Flask~=2.0.3
+Flask-SQLAlchemy~=2.5.1
+SQLAlchemy~=1.4.32
