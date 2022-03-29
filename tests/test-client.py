@@ -4,10 +4,11 @@
 import sys
 import json
 import base64
-import hashlib
-import binascii
-import cryptography
+#import hashlib
+#import binascii
+#import cryptography
 
+'''
 # https://github.com/Yubico/python-fido2/
 # sudo python3.8 -m pip install fido2
 import fido2
@@ -15,9 +16,10 @@ import fido2.client
 import fido2.server
 import fido2.ctap2
 import fido2.cbor
+'''
 
 # https://github.com/bodik/soft-webauthn
-# sudo python3.8 -m pip install soft-webauthn
+# sudo python3 -m pip install soft-webauthn
 import soft_webauthn
 
 # Include Library

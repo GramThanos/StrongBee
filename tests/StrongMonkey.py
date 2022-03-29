@@ -14,7 +14,7 @@ import datetime
 import requests
 import sys
 
-STRONGMONKEY_VESION = 'v0.0.4-beta';
+STRONGMONKEY_VESION = 'v0.0.4-beta.strongbee';
 STRONGMONKEY_DEBUG = False;
 STRONGMONKEY_CONNECTTIMEOUT = 10;
 STRONGMONKEY_TIMEOUT = 30;
@@ -25,7 +25,7 @@ class StrongMonkey:
     # Static variables
     api_protocol = 'FIDO2_0';
     api_version = 'SK3_0';
-    api_url_base = '/skfs/rest';
+    api_url_base = '/sbfs/rest';
     version = STRONGMONKEY_VESION;
     useragent = STRONGMONKEY_USERAGENT;
 
@@ -204,9 +204,9 @@ class StrongMonkey:
             authentication_hash = self.generateHMAC('POST', payload_hash, mimetype, date, path)
             
             # Add authorization Headers
-            headers['strongkey-content-sha256'] = payload_hash
+            headers['strongbee-content-sha256'] = payload_hash
             headers['Date'] = date
-            headers['strongkey-api-version'] = StrongMonkey.api_version
+            headers['strongbee-api-version'] = StrongMonkey.api_version
             headers['Authorization'] = authentication_hash
         # Credentials
         else:
