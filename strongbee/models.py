@@ -526,11 +526,22 @@ def db_initialize():
 	"""
 	# Create all schemes on the databases
 	db.create_all()
+	
 	# Create Domains
-	#Domains.create('fido2app.gramthanos.com', False)
-	#Domains.create('strongmonkey.gramthanos.com', False)
-	#Domains.create('unipi.gr', False)
+	try:
+		Domains.create('fido2app.gramthanos.com', False)
+		Domains.create('strongmonkey.gramthanos.com', False)
+		Domains.create('unipi.gr', False)
+		db.session.commit()
+	except Exception as e:
+		db.session.rollback()
+		pass
+
 	# Create API Credentials
-	#APICredentials.create('162a5684336fa6e7', '7edd81de1baab6ebcc76ebe3e38f41f4', False)
-	#APICredentials.create('b55938050b05019a', '40e5b172b3d01c204f5e301d132e4fa6', False)
-	#db.session.commit()
+	try:
+		APICredentials.create('162a5684336fa6e7', '7edd81de1baab6ebcc76ebe3e38f41f4', False)
+		APICredentials.create('b55938050b05019a', '40e5b172b3d01c204f5e301d132e4fa6', False)
+		db.session.commit()
+	except Exception as e:
+		db.session.rollback()
+		pass
