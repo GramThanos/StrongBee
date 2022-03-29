@@ -34,8 +34,8 @@ server.server_start_date = datetime.datetime.utcnow()
 db.init_app(server)
 
 # Bind Blueprints
-server.register_blueprint(api, url_prefix='/sbfs/rest') # Path for StrongBee FIDO Server (sbfs)
-server.register_blueprint(api, url_prefix='/skfs/rest') # Path for StrongKey FIDO Server (skfs) for compatibility
+server.register_blueprint(api, name='sbfs_rest_api', url_prefix='/sbfs/rest') # Path for StrongBee FIDO Server (sbfs)
+server.register_blueprint(api, name='skfs_rest_api', url_prefix='/skfs/rest') # Path for StrongKey FIDO Server (skfs) for compatibility
 
 # Listen first request to initialize database
 # Can be invoked by just running /sbfs/rest/ping (even Unauthenticated it will do the job)
